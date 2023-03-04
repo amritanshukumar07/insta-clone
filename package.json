@@ -13,14 +13,16 @@
     "react-loading-skeleton": "^3.1.0",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
+    "serve-build": "^0.1.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
     "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
     "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css --watch",
-    "react-scripts:start": "timeout 5 && react-scripts start",
+    "react-scripts:start": "react-scripts start",
+    "react-scripts:dist": "react-scripts build",
     "start": "run-p watch:css react-scripts:start",
-    "build": "run-s build:css react-scripts:build",
+    "build": "run-s build:css react-scripts:dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

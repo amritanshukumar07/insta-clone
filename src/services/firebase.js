@@ -9,7 +9,19 @@ export async function doesUsernameExists(username){
 
   return result.docs.map((user)=>user.data().length>0);
 }
+export async function getUserByUsername(username){
+  const result = await firebase
+  .firestore()
+  .collection('users')
+  .where('username','==',username)
+  .get();
 
+return result.docs.map((item)=>({
+  ...item.data(),
+  docId: item.id
+  }));
+  
+}
 export async function getUserByUserId(userId){
 
   const result = await firebase.firestore().collection('users').where('userId','==',userId).get();
@@ -69,4 +81,54 @@ export async function updateFollowedUserFollowers(profileDocId,loggedInUserDocId
 
   }
 
-  
+  // export async function getUserIdByUsername(username){
+  //   const result = await firebase.firestore()
+  //   .collection()
+  // }
+
+  export async function getUserPhotosByUsername(username){
+    const [user] = await getUserByUsername(username);
+
+    const result = await firebase
+    .firestore()
+    .collection('photos')
+    .where('userId','==',user.userId)
+    .get();
+
+    return result.docs.map((item) => ({
+      ...item.data(),
+      docId:item.Id
+    }));
+ 
+  }
+
+  export async function isUserFolllowingProfile(loggedInUserUsername,profileUserId){
+    const result = await firebase.firestore()
+    .collection('users')
+    .where('username','==',loggedInUserUsername)
+    .where('following','array-contains',profileUserId)
+    .get();
+    const [response = {}] = result.docs.map((item)=>({
+      ...item.data(),
+      docId:item.id
+  }));
+      return response.userId;
+  }
+
+  export async function toggleFollow(
+    isFollowingProfile,
+    activeUserDocId,
+    profileDocId,
+    profileUserId,
+    followingUserId) {
+   // 1st parameter My doc Id
+   // 2nd param  raphaels user Id
+   // 3rd param is user following this profile ? do i follow raphael (true or false)
+
+   await updateLoggedInUserFollowing(activeUserDocId,profileUserId,isFollowingProfile);
+ // 1st parameter My user Id
+   // 2nd param  raphaels doc Id
+   // 3rd param is user following this profile ? do i 
+
+   await updateFollowedUserFollowers(profileDocId,followingUserId,isFollowingProfile);
+  }

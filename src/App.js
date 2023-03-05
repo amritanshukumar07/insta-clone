@@ -4,7 +4,6 @@ import * as ROUTES from './constants/routes';
 import useAuthListener from "./hooks/use-auth-lisetner";
 import UserContext from "./context/user";
 import ProtectedRoute from "./helpers/protected-route";
-import IsUserLoggedIn from "./helpers/is-user-logged-in";
 
 
 
@@ -22,15 +21,8 @@ const {user} = useAuthListener();
     <Router>
       <Suspense fallback={<p>Loading...</p>}>
         <Routes>
-          <Route path={ROUTES.LOGIN} element= {
-          <IsUserLoggedIn user={user} loggedInPath={ROUTES.DASHBOARD}>
-          <Login/>
-          </IsUserLoggedIn>}
-          exact/>
-          <Route path={ROUTES.SIGN_UP} element= {
-          <IsUserLoggedIn user={user} loggedInPath={ROUTES.DASHBOARD}>
-          <SignUp/>
-          </IsUserLoggedIn>}/>
+          <Route path={ROUTES.LOGIN} element= {<Login/>}/>
+          <Route path={ROUTES.SIGN_UP} element= {<SignUp/>}/>
           <Route path={ROUTES.PROFILE} element={<Profile/>} />
           <Route path={ROUTES.DASHBOARD} element={
                  <ProtectedRoute user={user}  >

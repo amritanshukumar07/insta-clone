@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import PropTypes from 'prop-types'
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import useUser from '../../hooks/use-user'
 import {isUserFolllowingProfile, toggleFollow} from '../../services/firebase'
+import UserContext from "../../context/user";
+
+
 export default function Header({
     photosCount,
     followerCount,
     setFollowerCount,
     profile:{
     docId:profileDocId,userId:profileUserId,fullName,
-    following = [],
-    followers =[],
+    following ,
+    followers ,
     username: profileUsername}
 }){
-    const {user} = useUser();
+
+  const { user: loggedInUser} =useContext(UserContext);
+    const {user} = useUser(loggedInUser?.uid);
     const [isFollowingProfile,setIsFollowingProfile] = useState(false);
-    const activeBtnFollow = user.username && user.username !== profileUsername;
+    const activeBtnFollow =  user?.username && user?.username !== profileUsername;
     const handleToggleFollow = async ()=>{
         setIsFollowingProfile((isFollowingProfile)=> !isFollowingProfile);
         setFollowerCount({
@@ -28,20 +33,26 @@ export default function Header({
     const isLoggedInUserFolllowingProfile = async() => {
         const isFollowing = await isUserFolllowingProfile(user.username,profileUserId);
         setIsFollowingProfile(!!isFollowing);
-    }
-    if(user.username && profileUserId){
+    };
+
+    if(user?.username && profileUserId){
         isLoggedInUserFolllowingProfile();
     }
-    },[user.username, profileUserId]);
+    },[user?.username, profileUserId]);
 
     return <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
-     <div className="container flex justify-center">
-       {user.username && (
-        <img 
-        src={`/images/avatars/${profileUsername}.jpg`} 
-        alt={`${profileUsername} profile picture`} 
+     <div className="container flex justify-center items-center">
+       {profileUsername ? (
+              <img 
+              src={`/images/avatars/${profileUsername}.jpg`} 
+              alt={`${profileUsername} profile picture`} 
+              className="rounded-full h-40 w-40 flex" />
+        ):(
+         <img 
+        src="/images/avatars/amritanshu.jpg"
+        alt={"Amritnashu's profile picture"} 
         className="rounded-full h-40 w-40 flex" />
-        )}
+        ) }
       </div>
       <div className="flex items-center justify-center flex-col col-span-2">
           <div className="container flex items-center">
@@ -64,7 +75,7 @@ export default function Header({
           )}
           </div>
           <div className="container flex mt-4">
-          {followers === undefined || following=== undefined ?(
+          {!followers || !following ?(
             <Skeleton count={1} width={677} height={24}/>
           ):(
             <>

@@ -36,7 +36,8 @@ if(!usernameExists.length){
             username:username.toLowerCase(),
             fullName,
             emailAddress: emailAddress.toLowerCase(),
-            following:[],
+            following:['2'],
+            followers:[],
             dateCreated:Date.now()
         });
 
@@ -51,6 +52,7 @@ if(!usernameExists.length){
     }
 }
 else{
+    setUsername('');
     setError('That username is already taken, please try another.');
 }
 };

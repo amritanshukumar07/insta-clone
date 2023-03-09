@@ -62,11 +62,11 @@ useEffect(()=> {
 
     return(
      
-     <div className="container flex mx-auto max-w-screen-md items-center h-screen">
-        <div className="flex w-3/5">
-            <img src="/images/iphone-with-profile.jpg" alt="" />
+     <div className="container flex mx-auto max-w-screen-md items-center h-screen px-4 lg:px-0">
+        <div className="hidden lg:flex w-full  lg:w-3/5">
+            <img src="/images/iphone-with-profile.jpg" className="object-scale-down" alt="" />
         </div>
-        <div className="flex flex-col w-2/5">
+        <div className="flex flex-col w-full lg:w-2/5 justify-center h-full max-w-md m-auto ">
            <div className="flex flex-col items-center bg-white p-4 border rounded border-gray-primary">
            <h1 className="flex justify-center w-full">
             <img src="/images/logo.png" alt="Instagram" className="mt-2 w-6/12 mb-4"/>

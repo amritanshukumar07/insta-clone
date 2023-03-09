@@ -9,7 +9,7 @@ export default function Timeline(){
 const {user} = useContext(LoggedInUserContext)
 const {photos}=usePhotos(user);
     return(
-        <div className="container col-span-2">
+        <div className=" col-span-3 lg:col-span-2">
        {!photos ?(
             <Skeleton count={4} height={250} className="mb-5"/>
 

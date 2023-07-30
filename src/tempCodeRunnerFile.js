@@ -1,0 +1,1 @@
+ <Route path={ROUTES.PROFILE} element={<Profile/>} />
